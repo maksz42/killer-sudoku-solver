@@ -17,7 +17,7 @@ body {
   padding: 2rem;
   box-sizing: border-box;
   display: grid;
-  gap: 5rem;
+  gap: 1rem 5rem;
   justify-content: left;
   grid-template:
     "a b"
