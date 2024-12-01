@@ -22,6 +22,7 @@ body {
   grid-template:
     "a b"
     "a c"
+    "d ."
     ;
 }
 
@@ -45,6 +46,16 @@ kbd {
 
 kbd:last-of-type {
   margin-inline-end: 5px;
+}
+
+#github {
+  grid-area: d;
+  font-size: 1.5rem;
+  justify-self: start;
+}
+
+.icon {
+  height: 1em;
 }
 
 #loader {
