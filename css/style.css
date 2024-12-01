@@ -1,0 +1,229 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+:root {
+  --selection-color: red;
+  --cage-border-width: 2px;
+  --corner-offset: calc(90% - var(--cage-border-width));
+  --cage-color: cornflowerblue;
+  --sum-background: white;
+  --board-size-factor: min(1svh, 0.5svw);
+}
+
+body {
+  padding: 2rem;
+  box-sizing: border-box;
+  display: grid;
+  gap: 5rem;
+  justify-content: left;
+  grid-template:
+    "a b"
+    "a c"
+    ;
+}
+
+kbd {
+  background-color: #eee;
+  border-radius: 3px;
+  border: 1px solid #b4b4b4;
+  box-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.2),
+    0 2px 0 0 rgba(255, 255, 255, 0.7) inset;
+  color: #333;
+  display: inline-block;
+  font-weight: 700;
+  line-height: 1;
+  padding: 2px 4px;
+  white-space: nowrap;
+  margin-inline: 2px;
+  min-width: 1ch;
+  text-align: center;
+}
+
+kbd:last-of-type {
+  margin-inline-end: 5px;
+}
+
+#loader {
+  width: 50px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 8px solid;
+  border-color: #000 #0000;
+  animation: l1 1s infinite;
+}
+@keyframes l1 {to{transform: rotate(.5turn)}}
+
+#usage {
+  grid-area: c;
+  align-self: self-end;
+}
+
+#usage > div + div {
+  margin-top: 2px;
+}
+
+#info {
+  grid-area: b;
+}
+
+#message {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+#loader:not(.loading) {
+  display: none;
+}
+
+#board {
+  grid-area: a;
+  height: calc(80 * var(--board-size-factor));
+  aspect-ratio: 1;
+  border: 3px solid black;
+  border-collapse: collapse;
+}
+
+#board td {
+  --size: calc(100% / 9);
+  width: var(--size);
+  height: var(--size);
+  border: 1px solid black;
+  position: relative;
+}
+
+#board td > .digit {
+  font-size: calc(5.5 * var(--board-size-factor));
+  text-align: center;
+  z-index: 21;
+  position: relative;
+}
+
+#board td > .sum {
+  position: absolute;
+  left: 5%;
+  top: 1%;
+  padding-right: 2px;
+  padding-bottom: 2px;
+  background-color: var(--sum-background);
+  font-size: calc(2 * var(--board-size-factor));
+  z-index: 10;
+}
+
+#board td.sum-active > .sum {
+  --sum-background: pink;
+  min-width: 1ch;
+  min-height: 1em;
+  line-height: 1em;
+}
+
+#board td:nth-child(3n) {
+  border-right-width: 3px;
+}
+
+#board tr:nth-child(3n) > td {
+  border-bottom-width: 3px;
+}
+
+.selected::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  outline: 4px solid var(--selection-color);
+  z-index: 42;
+}
+
+.highlight {
+  background-color: orange;
+  --cage-color: orange;
+  --sum-background: orange;
+}
+
+#board td > :is(.center, .top-right, .bottom-right, .bottom-left, .top-left) {
+  border: var(--cage-border-width) dashed transparent;
+  position: absolute;
+}
+
+#board td > .center {
+  inset: 10%;
+}
+
+#board .cage {
+  background-color: var(--cage-color);
+  --sum-background: var(--cage-color);
+}
+
+#board [data-cage] > .center {
+  border-color: black;
+}
+
+#board .neighbour-right > .center {
+  border-right: none;
+  right: 0;
+}
+
+#board .neighbour-left > .center {
+  border-left: none;
+  left: 0;
+}
+
+#board .neighbour-top > .center {
+  border-top: none;
+  top: 0;
+}
+
+#board .neighbour-bottom > .center {
+  border-bottom: none;
+  bottom: 0;
+}
+
+#board .neighbour-top.neighbour-right:not(.neighbour-top-right) > .top-right {
+  inset:
+          0
+          0
+          var(--corner-offset)
+          var(--corner-offset)
+          ;
+  border-color: black;
+  border-top: none;
+  border-right: none;
+}
+
+#board .neighbour-bottom.neighbour-right:not(.neighbour-bottom-right) > .bottom-right {
+  inset:
+          var(--corner-offset)
+          0
+          0
+          var(--corner-offset)
+          ;
+  border-color: black;
+  border-right: none;
+  border-bottom: none;
+}
+
+#board .neighbour-bottom.neighbour-left:not(.neighbour-bottom-left) > .bottom-left {
+  inset:
+          var(--corner-offset)
+          var(--corner-offset)
+          0
+          0
+          ;
+  border-color: black;
+  border-bottom: none;
+  border-left: none;
+}
+
+#board .neighbour-top.neighbour-left:not(.neighbour-top-left) > .top-left {
+  inset:
+          0
+          var(--corner-offset)
+          var(--corner-offset)
+          0
+          ;
+  border-color: black;
+  border-left: none;
+  border-top: none;
+}
